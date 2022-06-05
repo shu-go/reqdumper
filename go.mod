@@ -10,5 +10,3 @@ require (
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/shu-go/cliparser v0.2.1 // indirect
 )
-
-replace github.com/shu-go/om => ..\om
