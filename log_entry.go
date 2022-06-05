@@ -115,7 +115,7 @@ func (l logEntry) writeAsMarkdown(out io.Writer, useCodeQuote bool) error {
 {{bt3}}
 {{end -}}
 {{if ne (len .FormParam) 0 -}}
-#### Form Parameters
+### Form Parameters
 
 | name | value |
 |------|-------|
@@ -123,7 +123,7 @@ func (l logEntry) writeAsMarkdown(out io.Writer, useCodeQuote bool) error {
 {{end}}
 {{end -}}
 {{if ne (len .File) 0 -}}
-#### Form Parameters (Files)
+### Form Parameters (Files)
 
 | name | value |
 |------|-------|
