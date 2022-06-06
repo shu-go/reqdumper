@@ -84,34 +84,34 @@ func (c *globalCmd) Before() error {
 func (c globalCmd) Run(args []string) error {
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		var err error
-		bag := newLogEntry()
+		entry := newLogEntry()
 
-		bag.URI = req.RequestURI
-		bag.Protocol = req.Proto
-		bag.Method = req.Method
-		bag.RemoteAddr = req.RemoteAddr
+		entry.URI = req.RequestURI
+		entry.Protocol = req.Proto
+		entry.Method = req.Method
+		entry.RemoteAddr = req.RemoteAddr
 
 		for k, v := range req.Header {
-			bag.Header[k] = v
+			entry.Header[k] = v
 		}
 
 		for k, v := range req.URL.Query() {
-			bag.QueryParam[k] = v
+			entry.QueryParam[k] = v
 		}
 
 		for k, v := range req.Trailer {
-			bag.Trailer[k] = v
+			entry.Trailer[k] = v
 		}
 
 		if err = req.ParseForm(); err == nil {
 			for k, v := range req.PostForm {
-				bag.FormParam[k] = v
+				entry.FormParam[k] = v
 			}
 		}
 
 		if err = req.ParseMultipartForm(32 << 20); err == nil {
 			for k, v := range req.MultipartForm.Value {
-				bag.FormParam[k] = v
+				entry.FormParam[k] = v
 			}
 			for paramName, v := range req.MultipartForm.File {
 				wd, err := os.Getwd()
@@ -153,7 +153,7 @@ func (c globalCmd) Run(args []string) error {
 					fsrc.Close()
 					f.Close()
 				}
-				bag.File[paramName] = names
+				entry.File[paramName] = names
 			}
 		}
 
@@ -163,18 +163,18 @@ func (c globalCmd) Run(args []string) error {
 			fmt.Fprintf(os.Stderr, "error: %v\n", err)
 			return
 		}
-		bag.Body = body.String()
+		entry.Body = body.String()
 
 		out := os.Stdout
 		switch c.LogFormat {
 		case lfJSON:
-			err = bag.writeAsJSON(out)
+			err = entry.writeAsJSON(out)
 		case lfJSONIndent:
-			err = bag.writeAsJSONIndent(out)
+			err = entry.writeAsJSONIndent(out)
 		case lfText:
-			err = bag.writeAsText(out)
+			err = entry.writeAsText(out)
 		case lfMarkdown:
-			err = bag.writeAsMarkdown(out, c.MDUseCodeQuote)
+			err = entry.writeAsMarkdown(out, c.MDUseCodeQuote)
 		}
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error: %v\n", err)
@@ -188,7 +188,7 @@ func (c globalCmd) Run(args []string) error {
 func main() {
 	app := gli.NewWith(&globalCmd{})
 	app.Name = "reqdumper"
-	app.Desc = "Dumps http requests"
+	app.Desc = "Dumps HTTP requests"
 	app.Version = Version
 	app.Usage = `--fileformat:
     {year}{month}{day}: date
