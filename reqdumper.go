@@ -22,7 +22,7 @@ type globalCmd struct {
 	Port int `cli:"port,p" default:"12345"`
 
 	LogFormat  string `cli:"logformat,lf" default:"json" help:"json|jsonindent|text|markdown"`
-	FileFormat string `cli:"fileformat,ff" default:"file/{uri_asdir}/{filename}_{year}{month}{day}_{hour}{minute}{second}{nano}.{ext}" help:"see usage"`
+	FileFormat string `cli:"fileformat,ff" default:"file/{uri_asdir}/{filename}_{year}{month}{day}_{hour}{minute}{second}{nano}{ext}" help:"see usage"`
 
 	MDUseCodeQuote bool `cli:"md-use-codequote" default:"true"`
 }
