@@ -196,7 +196,8 @@ func main() {
     {uri}{url}: URI joined by _ instead of /
     {uri_asdir}{url_asdir}: URI joined by a path delimiter instead of /
     {paramname}: param name
-    {filename}: file name`
+    {filename}: file name without ext
+    {ext}: the suffix beginning at the final dot in the filename`
 	app.Copyright = "(C) 2022 Shuhei Kubota"
 	app.SuppressErrorOutput = true
 	err := app.Run(os.Args)
