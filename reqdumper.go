@@ -81,7 +81,7 @@ func (c *globalCmd) Before() error {
 	return nil
 }
 
-func (c globalCmd) Run(args []string) error {
+func (c globalCmd) Run() error {
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		var err error
 		entry := newLogEntry()
@@ -149,9 +149,14 @@ func (c globalCmd) Run(args []string) error {
 						f.Close()
 						return
 					}
-					io.Copy(f, fsrc)
+					_, err = io.Copy(f, fsrc)
 					fsrc.Close()
 					f.Close()
+
+					if err != nil {
+						fmt.Fprintf(os.Stderr, "error: %v\n", err)
+						return
+					}
 				}
 				entry.File[paramName] = names
 			}

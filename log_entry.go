@@ -41,6 +41,9 @@ func (l logEntry) writeAsJSON(out io.Writer) error {
 		return err
 	}
 	_, err = out.Write(b)
+	if err != nil {
+		return err
+	}
 	_, err = out.Write([]byte("\n"))
 	return err
 }
@@ -51,6 +54,9 @@ func (l logEntry) writeAsJSONIndent(out io.Writer) error {
 		return err
 	}
 	_, err = out.Write(b)
+	if err != nil {
+		return err
+	}
 	_, err = out.Write([]byte("\n"))
 	return err
 }
